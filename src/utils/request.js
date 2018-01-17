@@ -2,6 +2,7 @@ import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import store from '../store'
 import { getToken } from '@/utils/auth'
+import Qs from 'qs'
 
 // 创建axios实例
 const service = axios.create({
@@ -11,8 +12,10 @@ const service = axios.create({
 
 // request拦截器
 service.interceptors.request.use(config => {
+  config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+  config.data = Qs.stringify(config.data)
   if (store.getters.token) {
-    config.headers['X-Token'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
+    config.headers['Authorization'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
   }
   return config
 }, error => {
@@ -28,7 +31,7 @@ service.interceptors.response.use(
   * code为非20000是抛错 可结合自己业务进行修改
   */
     const res = response.data
-    if (res.code !== 20000) {
+    if (res.status !== 0) {
       Message({
         message: res.data,
         type: 'error',

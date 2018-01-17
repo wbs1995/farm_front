@@ -49,7 +49,7 @@ export default {
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: 'success',
+        success: 'success',
         draft: 'gray',
         deleted: 'danger'
       }
