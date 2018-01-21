@@ -8,8 +8,8 @@
       <!--<el-button class="filter-item" style="margin-left: 10px;" size="medium" type="primary" icon="el-icon-edit"-->
       <!--@click="handleCreate">创建-->
       <!--</el-button>-->
-      <el-button class="filter-item" type="primary" size="medium" icon="el-icon-download">下载</el-button>
-      <el-button class="filter-item" type="primary" size="medium" icon="el-icon-refresh" @click="getList">刷新</el-button>
+      <el-button class="filter-item" type="primary" size="mini" icon="el-icon-download">下载</el-button>
+      <el-button class="filter-item" type="primary" size="mini" icon="el-icon-refresh" @click="getList">刷新</el-button>
       <el-checkbox-group v-model="checkboxVal">
         <el-checkbox label="lastDate">最后登录日期</el-checkbox>
         <el-checkbox label="createTime">创建日期</el-checkbox>

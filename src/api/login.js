@@ -25,3 +25,14 @@ export function logout() {
     method: 'get'
   })
 }
+
+export function validation(str, type) {
+  return request({
+    url: '/user/validation.do',
+    method: 'get',
+    params: {
+      str,
+      type
+    }
+  })
+}

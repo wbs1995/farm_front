@@ -15,3 +15,11 @@ export function userUpdate(params) {
     params
   })
 }
+
+export function userRegister(params) {
+  return request({
+    url: '/user/register.do',
+    method: 'post',
+    params
+  })
+}
