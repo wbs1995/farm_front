@@ -33,7 +33,7 @@ service.interceptors.response.use(
     const res = response.data
     if (res.status !== 0) {
       Message({
-        message: res.data,
+        message: res.msg,
         type: 'error',
         duration: 5 * 1000
       })

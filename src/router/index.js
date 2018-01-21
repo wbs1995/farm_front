@@ -17,6 +17,7 @@ import Layout from '../views/layout/Layout'
  * meta : {
     title: 'title'               the name show in submenu and breadcrumb (recommend set)
     icon: 'svg-name'             the icon show in the sidebar,
+    meta : `{ role: [0] }`  will control the page role
   }
  **/
 export const constantRouterMap = [
@@ -46,88 +47,30 @@ export const constantRouterMap = [
         meta: {title: '首页', icon: 'dashboard'}
       }
     ]
-  },
+  }
+]
 
+export const asyncRouterMap = [
   {
     path: '/user',
     component: Layout,
     redirect: 'table',
     name: 'User',
-    meta: {title: '用户管理', icon: 'peoples'},
+    meta: {title: '用户管理', icon: 'peoples', role: [0]},
     children: [
       {
         path: 'table',
         name: 'Table',
         component: _import('user/userTable'),
-        meta: {title: '用户列表', icon: 'table'}
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: _import('user/userForm'),
-        meta: {title: '用户添加', icon: 'people'}
+        meta: {title: '用户列表', icon: 'table', role: [0]}
       }
     ]
   },
-
-  // {
-  //   path: '/example',
-  //   component: Layout,
-  //   redirect: '/example/table',
-  //   name: 'Example',
-  //   meta: {title: '设备管理', icon: 'example'},
-  //   children: [
-  //     {
-  //       path: 'table',
-  //       name: 'Table',
-  //       component: _import('table/index'),
-  //       meta: {title: '设备列表', icon: 'table'}
-  //     },
-  //     {
-  //       path: 'tree',
-  //       name: 'Tree',
-  //       component: _import('tree/index'),
-  //       meta: {title: '设备添加', icon: 'tree'}
-  //     }
-  //   ]
-  // },
-
-  // {
-  //   path: '/example',
-  //   component: Layout,
-  //   redirect: '/example/table',
-  //   name: 'Example',
-  //   meta: {title: 'Example', icon: 'example'},
-  //   children: [
-  //     {
-  //       path: 'table',
-  //       name: 'Table',
-  //       component: _import('table/index'),
-  //       meta: {title: 'Table', icon: 'table'}
-  //     },
-  //     {
-  //       path: 'tree',
-  //       name: 'Tree',
-  //       component: _import('tree/index'),
-  //       meta: {title: 'Tree', icon: 'tree'}
-  //     }
-  //   ]
-  // },
-
-  // {
-  //   path: '/form',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       name: 'Form',
-  //       component: _import('form/index'),
-  //       meta: {title: 'Form', icon: 'form'}
-  //     }
-  //   ]
-  // },
-
-  {path: '*', redirect: '/404', hidden: true}
+  {
+    path: '*',
+    redirect: '/404',
+    hidden: true
+  }
 ]
 
 export default new Router({
