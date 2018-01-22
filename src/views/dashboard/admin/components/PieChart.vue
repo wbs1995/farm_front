@@ -35,6 +35,9 @@ export default {
       }
     }, 100)
     window.addEventListener('resize', this.__resizeHanlder)
+    // 监听侧边栏的变化
+    const sidebarElm = document.getElementsByClassName('sidebar-container')[0]
+    sidebarElm.addEventListener('transitionend', this.__resizeHanlder)
   },
   beforeDestroy() {
     if (!this.chart) {
@@ -53,6 +56,10 @@ export default {
           trigger: 'item',
           formatter: '{a} <br/>{b} : {c} ({d}%)'
         },
+        label: {
+          formatter: '{@2012}',
+          position: 'bottom'
+        },
         legend: {
           left: 'center',
           bottom: '10',
@@ -61,7 +68,7 @@ export default {
         calculable: true,
         series: [
           {
-            name: 'WEEKLY WRITE ARTICLES',
+            name: '设备型号占用比',
             type: 'pie',
             roseType: 'radius',
             radius: [15, 95],

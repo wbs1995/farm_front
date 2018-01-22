@@ -62,7 +62,7 @@ export const asyncRouterMap = [
         path: 'table',
         name: 'Table',
         component: _import('user/userTable'),
-        meta: {title: '用户列表', icon: 'table', role: [0]}
+        meta: {title: '用户管理', icon: 'peoples', role: [0]}
       }
     ]
   },

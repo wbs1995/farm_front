@@ -37,6 +37,9 @@ export default {
       }
     }, 100)
     window.addEventListener('resize', this.__resizeHanlder)
+    // 监听侧边栏的变化
+    const sidebarElm = document.getElementsByClassName('sidebar-container')[0]
+    sidebarElm.addEventListener('transitionend', this.__resizeHanlder)
   },
   beforeDestroy() {
     if (!this.chart) {
@@ -72,18 +75,16 @@ export default {
             }
           },
           indicator: [
-            { name: 'Sales', max: 10000 },
-            { name: 'Administration', max: 20000 },
-            { name: 'Information Techology', max: 20000 },
-            { name: 'Customer Support', max: 20000 },
-            { name: 'Development', max: 20000 },
-            { name: 'Marketing', max: 20000 }
+            { name: '价格', max: 5 },
+            { name: '使用', max: 5 },
+            { name: '延时', max: 5 },
+            { name: '精度', max: 5 }
           ]
         },
         legend: {
           left: 'center',
           bottom: '10',
-          data: ['Allocated Budget', 'Expected Spending', 'Actual Spending']
+          data: ['Raspberry', 'STM32', 'Arduino']
         },
         series: [{
           type: 'radar',
@@ -99,16 +100,16 @@ export default {
           },
           data: [
             {
-              value: [5000, 7000, 12000, 11000, 15000, 14000],
-              name: 'Allocated Budget'
+              value: [3, 2, 1, 4],
+              name: 'Raspberry'
             },
             {
-              value: [4000, 9000, 15000, 15000, 13000, 11000],
-              name: 'Expected Spending'
+              value: [1, 2, 3, 4],
+              name: 'STM32'
             },
             {
-              value: [5500, 11000, 12000, 15000, 12000, 12000],
-              name: 'Actual Spending'
+              value: [4, 3, 2, 2],
+              name: 'Arduino'
             }
           ],
           animationDuration: animationDuration

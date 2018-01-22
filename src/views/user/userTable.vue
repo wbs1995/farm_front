@@ -4,12 +4,12 @@
       <el-input style="width: 200px;" class="filter-item" placeholder="姓名/手机号码/地址" size="medium"
                 v-model="listQuery.title">
       </el-input>
-      <!--<el-button class="filter-item" type="primary" size="medium" icon="el-icon-search" @click="getList">搜索</el-button>-->
+      <el-button class="filter-item" type="primary" size="medium" icon="el-icon-search" @click="getList">搜索</el-button>
       <!--<el-button class="filter-item" style="margin-left: 10px;" size="medium" type="primary" icon="el-icon-edit"-->
       <!--@click="handleCreate">创建-->
       <!--</el-button>-->
       <el-button class="filter-item" type="primary" size="mini" icon="el-icon-download">下载</el-button>
-      <el-button class="filter-item" type="primary" size="mini" icon="el-icon-refresh" @click="getList">刷新</el-button>
+      <el-button class="filter-item" type="primary" size="mini" icon="el-icon-refresh" @click="handleRefresh">刷新</el-button>
       <el-checkbox-group v-model="checkboxVal">
         <el-checkbox label="lastDate">最后登录日期</el-checkbox>
         <el-checkbox label="createTime">创建日期</el-checkbox>
@@ -65,12 +65,12 @@
         </template>
       </el-table-column>
       <!--<el-table-column-->
-        <!--prop="createTime"-->
-        <!--label="创建日期"-->
-        <!--width="180">-->
-        <!--<template slot-scope="scope">-->
-          <!--<span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>-->
-        <!--</template>-->
+      <!--prop="createTime"-->
+      <!--label="创建日期"-->
+      <!--width="180">-->
+      <!--<template slot-scope="scope">-->
+      <!--<span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>-->
+      <!--</template>-->
       <!--</el-table-column>-->
       <el-table-column
         prop="updateTime"
@@ -84,7 +84,8 @@
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">查看</el-button>
           <!--<el-button type="success" size="mini">授权</el-button>-->
-          <el-button v-if="scope.row.status != 2" type="danger" size="mini" @click="handleStatus(scope.row)">禁用</el-button>
+          <el-button v-if="scope.row.status != 2" type="danger" size="mini" @click="handleStatus(scope.row)">禁用
+          </el-button>
           <el-button v-else type="primary" size="mini" @click="handleStatus(scope.row)">激活</el-button>
         </template>
       </el-table-column>
@@ -226,6 +227,10 @@
           this.total = response.data.total
           this.listLoading = false
         })
+      },
+      handleRefresh() {
+        this.listQuery.title = undefined
+        this.getList()
       },
       handleSizeChange(val) {
         this.listQuery.pageSize = val

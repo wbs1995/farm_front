@@ -37,6 +37,9 @@ export default {
       }
     }, 100)
     window.addEventListener('resize', this.__resizeHanlder)
+    // 监听侧边栏的变化
+    const sidebarElm = document.getElementsByClassName('sidebar-container')[0]
+    sidebarElm.addEventListener('transitionend', this.__resizeHanlder)
   },
   beforeDestroy() {
     if (!this.chart) {
@@ -66,7 +69,7 @@ export default {
         },
         xAxis: [{
           type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
           axisTick: {
             alignWithLabel: true
           }
@@ -77,26 +80,34 @@ export default {
             show: false
           }
         }],
+        legend: {
+          data: ['移动端', 'PC端']
+        },
         series: [{
-          name: 'pageA',
+          name: '移动端',
           type: 'bar',
           stack: 'vistors',
           barWidth: '60%',
+          label: {
+            normal: {
+              show: true,
+              position: 'inside'
+            }
+          },
           data: [79, 52, 200, 334, 390, 330, 220],
           animationDuration
         }, {
-          name: 'pageB',
+          name: 'PC端',
           type: 'bar',
           stack: 'vistors',
           barWidth: '60%',
-          data: [80, 52, 200, 334, 390, 330, 220],
-          animationDuration
-        }, {
-          name: 'pageC',
-          type: 'bar',
-          stack: 'vistors',
-          barWidth: '60%',
-          data: [30, 52, 200, 334, 390, 330, 220],
+          label: {
+            normal: {
+              show: true,
+              position: 'inside'
+            }
+          },
+          data: [220, 80, 52, 334, 200, 390, 330],
           animationDuration
         }]
       })

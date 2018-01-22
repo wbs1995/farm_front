@@ -83,8 +83,8 @@
             }
           },
           grid: {
-            left: 60,
-            right: 60,
+            left: 50,
+            right: 40,
             bottom: 40,
             top: 50,
             tainLabel: true

@@ -23,3 +23,13 @@ export function userRegister(params) {
     params
   })
 }
+
+export function newUserCount(type) {
+  return request({
+    url: '/user/new_user_count.do',
+    method: 'get',
+    params: {
+      type
+    }
+  })
+}
