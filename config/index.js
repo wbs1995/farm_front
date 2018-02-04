@@ -50,7 +50,7 @@ module.exports = {
 
   build: {
     // Template for index.vue
-    index: path.resolve(__dirname, '../dist/index.vue'),
+    index: path.resolve(__dirname, '../dist/index.html'),
 
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),

@@ -114,7 +114,6 @@
         if (value.length < 5) {
           callback(new Error('密码不能小于5位'))
         } else {
-          console.log('123')
           callback()
         }
       }
@@ -157,19 +156,12 @@
         this.$refs.loginForm.validate(valid => {
           if (valid) {
             userRegister(this.temp).then(response => {
-              if (response.status === 0) {
-                this.dialogFormVisible = false
-                this.$notify({
-                  title: '成功',
-                  message: response.msg,
-                  type: 'success'
-                })
-              } else {
-                this.$notify.error({
-                  title: '错误',
-                  message: response.msg
-                })
-              }
+              this.dialogFormVisible = false
+              this.$notify({
+                title: '成功',
+                message: response.msg,
+                type: 'success'
+              })
             })
           }
         })

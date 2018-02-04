@@ -1,20 +1,15 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input style="width: 200px;"
-                class="filter-item"
-                placeholder="姓名 / 手机号码 / 地址"
-                size="mini"
-                clearable
-                v-model="listQuery.title">
+      <el-input style="width: 200px;" class="filter-item" placeholder="ID / 设备号" size="mini" clearable
+                @change="handlerSearch" v-model="listQuery.title">
         <i slot="prefix" class="el-input__icon el-icon-search"></i>
       </el-input>
     </div>
-    <el-table
-      :data="list"
+    <el-table :data="list"
       border
-      size="mini"
       @sort-change="sortChange"
+      size="mini"
       style="width: 100%">
       <el-table-column
         prop="id"
@@ -26,61 +21,46 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="username"
-        label="姓名"
-        width="180">
+        prop="did"
+        label="设备号"
+        width="250">
         <template slot-scope="scope">
-          <span class="link-type">{{scope.row.username}}</span>
+          <span class="link-type">{{scope.row.did}}</span>
         </template>
       </el-table-column>
       <el-table-column
-        prop="phone"
-        label="手机号码"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="address"
-        label="地址">
-      </el-table-column>
-      <el-table-column
-        prop="role"
-        label="身份"
+        prop="model"
+        label="型号"
         sortable="custom"
-        width="80">
-        <template slot-scope="scope">
-          <el-tag>{{scope.row.role | roleFilter}}</el-tag>
-        </template>
+        width="100">
       </el-table-column>
       <el-table-column
-        prop="status"
-        label="状态"
-        sortable="custom"
-        width="80">
+        prop="token"
+        label="认证码">
+      </el-table-column>
+      <el-table-column
+        prop="createTime"
+        label="创建日期"
+        width="150">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusTypeFilter">{{scope.row.status | statusFilter}}</el-tag>
+          <i class="el-icon-time"></i>
+          <span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
         </template>
       </el-table-column>
-      <!--<el-table-column-->
-      <!--prop="createTime"-->
-      <!--label="创建日期"-->
-      <!--width="180">-->
-      <!--<template slot-scope="scope">-->
-      <!--<span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>-->
-      <!--</template>-->
-      <!--</el-table-column>-->
       <el-table-column
         prop="updateTime"
         label="最后登录日期"
-        width="180">
+        width="150">
         <template slot-scope="scope">
+          <i class="el-icon-time"></i>
           <span>{{scope.row.updateTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" width="130" class-name="small-padding fixed-width" label="操作">
+      <el-table-column align="center" width="150" class-name="small-padding fixed-width" label="操作">
         <template slot-scope="scope">
           <el-button type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"/>
-          <el-button v-if="scope.row.status != 2" type="text" icon="el-icon-close" size="mini" @click="handleStatus(scope.row)"/>
-          <el-button v-else type="text" size="mini" icon="el-icon-check" @click="handleStatus(scope.row)"/>
+          <el-button type="text" icon="el-icon-view"/>
+          <el-button type="text" icon="el-icon-download"/>
         </template>
       </el-table-column>
     </el-table>
@@ -89,24 +69,24 @@
                      @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
                      :current-page.sync="listQuery.pageNum"
-                     :page-sizes="[5,10,20,30,50]" :page-size="listQuery.pageSize"
+                     :page-sizes="[10,20,30,50]" :page-size="listQuery.pageSize"
                      layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="70px"
                style='width: 400px; margin-left:50px;'>
-        <el-form-item label="用户ID" v-if="dialogStatus=='update'">
+        <el-form-item label="设备ID" v-if="dialogStatus=='update'">
           <el-input v-model="temp.id" disabled></el-input>
         </el-form-item>
-        <el-form-item label="用户名" prop="username">
-          <el-input v-model="temp.username"></el-input>
+        <el-form-item label="型号" prop="username">
+          <el-input v-model="temp.model" disabled></el-input>
         </el-form-item>
-        <el-form-item label="手机号" prop="phone">
-          <el-input v-model="temp.phone"></el-input>
+        <el-form-item label="设备号" prop="username">
+          <el-input v-model="temp.did" disabled></el-input>
         </el-form-item>
-        <el-form-item label="地址" prop="address">
-          <el-input v-model="temp.address"></el-input>
+        <el-form-item label="认证码" prop="phone">
+          <el-input v-model="temp.token" disabled></el-input>
         </el-form-item>
         <el-form-item label="创建日期" v-if="dialogStatus=='update'">
           <el-date-picker v-model="temp.createTime" type="datetime" disabled>
@@ -116,16 +96,12 @@
           <el-date-picker v-model="temp.updateTime" type="datetime" disabled>
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="备注">
-          <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入" v-model="temp.remark">
-          </el-input>
-        </el-form-item>
       </el-form>
 
       <div slot="footer" class="dialog-footer">
         <el-button v-if="dialogStatus=='create'" @click="dialogFormVisible = false">取消</el-button>
         <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">确认</el-button>
-        <el-button v-else type="primary" @click="updateData">确认</el-button>
+        <el-button v-else type="primary">确认</el-button>
       </div>
     </el-dialog>
 
@@ -133,32 +109,29 @@
 </template>
 
 <script>
-  import {fetchList, userUpdate} from '@/api/user'
+  import {fetchList} from '@/api/device'
   import {parseTime} from '@/utils'
 
   export default {
-    name: 'userTable',
+    name: 'deviceTable',
     data() {
       return {
         listQuery: {
           pageNum: 1,
-          pageSize: 5,
+          pageSize: 10,
           importance: undefined,
           title: '',
           type: undefined,
-          orderBy: 'status desc',
+          orderBy: 'id desc',
           sort: 'createTime'
         },
         temp: {
           id: undefined,
           createTime: '',
           updateTime: '',
-          phone: '',
-          role: [],
-          name: '',
-          deleteStatus: 0,
-          address: '',
-          remark: ''
+          did: '',
+          token: '',
+          model: ''
         },
         sortOptions: [],
         checkboxVal: [],
@@ -234,62 +207,11 @@
         this.listQuery.page = val
         this.getList()
       },
-      handleStatus(row) {
-        this.temp = Object.assign({}, row)
-        // 更改用户状态
-        this.temp.status = this.temp.status === 2 ? 1 : 2
-        this.temp.updateTime = undefined
-        this.temp.createTime = undefined
-        userUpdate(this.temp).then(response => {
-          this.$notify({
-            title: '状态',
-            message: response.msg,
-            type: 'success',
-            duration: 1000
-          })
-          this.getList()
-        })
-      },
       handleCreate() {
         this.dialogStatus = 'create'
         this.dialogFormVisible = true
         this.$nextTick(() => {
           this.$refs['dataForm'].clearValidate()
-        })
-      },
-      handleSearch() {
-        console.log('search')
-        this.getList()
-      },
-      createData() {
-        this.$refs['dataForm'].validate((valid) => {
-          if (valid) {
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '创建成功',
-              type: 'success',
-              duration: 2000
-            })
-          }
-        })
-      },
-      updateData() {
-        this.$refs['dataForm'].validate((valid) => {
-          if (valid) {
-            this.temp.updateTime = undefined
-            this.temp.createTime = undefined
-            userUpdate(this.temp).then(response => {
-              this.dialogFormVisible = false
-              this.$notify({
-                title: '更新结果',
-                message: response.msg,
-                type: 'success',
-                duration: 2000
-              })
-              this.getList()
-            })
-          }
         })
       },
       handleUpdate(row) {
@@ -299,6 +221,9 @@
         this.$nextTick(() => {
           this.$refs['dataForm'].clearValidate()
         })
+      },
+      handlerSearch() {
+        this.getList()
       },
       sortChange(val) {
         console.log('column', val)

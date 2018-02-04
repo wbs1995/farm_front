@@ -18,14 +18,14 @@
           <count-to class="card-panel-num" :startVal="0" :endVal="newDeviceCount" :duration="3000"></count-to>
         </div>
         <div class="card-panel-icon-wrapper icon-deviceCard">
-          <svg-icon icon-class="device" class-name="card-panel-icon"/>
+          <svg-icon icon-class="device2" class-name="card-panel-icon"/>
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('networkTraffic')">
         <div class="card-panel-icon-wrapper icon-download">
-          <svg-icon icon-class="download" class-name="card-panel-icon"/>
+          <svg-icon icon-class="networkTraffic" class-name="card-panel-icon"/>
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">数据流量</div>
@@ -36,7 +36,7 @@
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('deviceFailure')">
         <div class="card-panel-icon-wrapper icon-errorCard">
-          <svg-icon icon-class="error" class-name="card-panel-icon"/>
+          <svg-icon icon-class="error2" class-name="card-panel-icon"/>
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">新增故障</div>

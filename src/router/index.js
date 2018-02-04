@@ -47,6 +47,51 @@ export const constantRouterMap = [
         meta: {title: '首页', icon: 'dashboard'}
       }
     ]
+  },
+
+  {
+    path: '/data',
+    component: Layout,
+    redirect: 'deviceTable',
+    name: 'Data',
+    meta: {title: '数据中心', icon: 'chart'},
+    children: [
+      {
+        path: 'air_temp',
+        name: 'airTemperatureTable',
+        component: _import('data/airTemperatureTable'),
+        meta: {title: '空气温度', icon: 'airTemperature'}
+      },
+      {
+        path: 'air_humidity',
+        name: 'airHumidityTable',
+        component: _import('data/airHumidityTable'),
+        meta: {title: '空气湿度', icon: 'airHumidity'}
+      }
+    ]
+  },
+
+  {
+    path: '/device',
+    component: Layout,
+    redirect: 'deviceTable',
+    name: 'Device',
+    meta: {title: '设备管理', icon: 'device2'},
+    children: [
+      {
+        path: 'table',
+        name: 'deviceTable',
+        component: _import('device/deviceTable'),
+        meta: {title: '设备列表', icon: 'table'}
+      },
+
+      {
+        path: 'register',
+        name: 'deviceRegister',
+        component: _import('device/deviceRegister'),
+        meta: {title: '设备注册', icon: 'formAdd'}
+      }
+    ]
   }
 ]
 
@@ -54,13 +99,13 @@ export const asyncRouterMap = [
   {
     path: '/user',
     component: Layout,
-    redirect: 'table',
+    redirect: 'userTable',
     name: 'User',
     meta: {title: '用户管理', icon: 'peoples', role: [0]},
     children: [
       {
         path: 'table',
-        name: 'Table',
+        name: 'userTable',
         component: _import('user/userTable'),
         meta: {title: '用户管理', icon: 'peoples', role: [0]}
       }
