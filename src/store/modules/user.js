@@ -1,5 +1,6 @@
 import {login, logout, getInfo} from '@/api/login'
 import {getToken, setToken, removeToken} from '@/utils/auth'
+import {imgUrl} from '@/utils/index'
 
 const user = {
   state: {
@@ -46,7 +47,7 @@ const user = {
           const data = response.data
           commit('SET_ROLES', [data.role])
           commit('SET_NAME', data.username)
-          // commit('SET_AVATAR', data.avatar)
+          commit('SET_AVATAR', imgUrl() + data.avatar)
           resolve(response)
         }).catch(error => {
           reject(error)

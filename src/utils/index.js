@@ -91,3 +91,7 @@ export function debounce(func, wait, immediate) {
     return result
   }
 }
+
+export function imgUrl() {
+  return 'http://image.farm.lujiantao.xyz/'
+}

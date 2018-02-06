@@ -68,6 +68,12 @@ export const constantRouterMap = [
         component: _import('data/airHumidityTable'),
         meta: {title: '空气湿度', icon: 'airHumidity'}
       }
+      // {
+      //   path: 'image',
+      //   name: 'image',
+      //   component: _import('data/imageTable'),
+      //   meta: {title: '实时图像', icon: 'airHumidity'}
+      // }
     ]
   },
 
@@ -90,6 +96,20 @@ export const constantRouterMap = [
         name: 'deviceRegister',
         component: _import('device/deviceRegister'),
         meta: {title: '设备注册', icon: 'formAdd'}
+      }
+    ]
+  },
+
+  {
+    path: '/info',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: 'index',
+        name: 'info',
+        component: _import('user/info'),
+        meta: {title: '个人中心', icon: 'people'}
       }
     ]
   }

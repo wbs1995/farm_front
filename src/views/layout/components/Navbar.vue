@@ -9,16 +9,19 @@
       </el-tooltip>
       <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
-        <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
+        <img class="user-avatar" :src="avatar">
       </div>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
-        <router-link class="inlineBlock" to="/">
-          <el-dropdown-item>
-            首页
+        <el-dropdown-item>
+          <span style="display:block;">已登录用户 {{name}}</span>
+        </el-dropdown-item>
+        <router-link class="inlineBlock" to="/info/index">
+          <el-dropdown-item divided>
+            个人中心
           </el-dropdown-item>
         </router-link>
         <el-dropdown-item divided>
-          <span @click="logout" style="display:block;">退出</span>
+          <span @click="logout" style="display:block;">退出登录</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
@@ -40,12 +43,13 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'sidebar'
+      'name',
+      'sidebar',
+      'avatar'
     ])
   },
   data() {
     return {
-      avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'
     }
   },
   methods: {
