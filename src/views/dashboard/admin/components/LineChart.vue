@@ -5,7 +5,7 @@
 <script>
   import echarts from 'echarts'
 
-  require('echarts/theme/infographic')
+//  require('echarts/theme/infographic')
   import {debounce} from '@/utils'
 
   export default {

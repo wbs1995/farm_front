@@ -3,6 +3,7 @@
 </template>
 
 <script>
+  require('echarts/theme/dark')
   import echarts from 'echarts'
   import {debounce} from '@/utils'
 
@@ -147,7 +148,7 @@
                   color: '#3888fa',
                   lineStyle: {
                     color: '#3888fa',
-                    width: 1
+                    width: 2
                   },
                   areaStyle: {
                     color: '#f3f8ff'

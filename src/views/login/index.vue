@@ -37,25 +37,25 @@
     <div class="register-container">
       <el-dialog title="用户注册" :visible.sync="dialogFormVisible" :show-close="false" :close-on-click-modal="false"
                  :close-on-press-escape="false">
-        <el-form :rules="registerRules" ref="dataForm" :model="temp" label-position="left" label-width="80px"
+        <el-form :rules="registerRules" ref="dataForm" :model="dataForm" label-position="left" label-width="80px"
                  style='width: 400px; margin-left:50px;'>
           <el-form-item label="用户名" prop="username">
-            <el-input v-model="temp.username"></el-input>
+            <el-input v-model="dataForm.username"></el-input>
           </el-form-item>
           <el-form-item label="邮箱" prop="email">
-            <el-input v-model="temp.email"></el-input>
+            <el-input v-model="dataForm.email"></el-input>
           </el-form-item>
           <el-form-item label="手机" prop="phone">
-            <el-input v-model="temp.phone"></el-input>
+            <el-input v-model="dataForm.phone"></el-input>
           </el-form-item>
           <el-form-item label="密码" prop="password">
-            <el-input v-model="temp.password" type="password"></el-input>
+            <el-input v-model="dataForm.password" type="password"></el-input>
           </el-form-item>
           <el-form-item label="确认密码" prop="againPassword">
-            <el-input v-model="temp.againPassword" type="password"></el-input>
+            <el-input v-model="dataForm.againPassword" type="password"></el-input>
           </el-form-item>
           <el-form-item label="地址" prop="address">
-            <el-input v-model="temp.address"></el-input>
+            <el-input v-model="dataForm.address"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -97,7 +97,7 @@
         })
       }
       const confirmPassword = (rule, value, callback) => {
-        if (this.temp.password !== value) {
+        if (this.dataForm.password !== value) {
           callback(new Error('两次密码不一样, value: ', value))
         } else {
           callback()
@@ -128,7 +128,7 @@
         },
         loading: false,
         pwdType: 'password',
-        temp: {
+        dataForm: {
           phone: '',
           password: '',
           againPassword: '',
@@ -153,9 +153,9 @@
         }
       },
       handleRegister() {
-        this.$refs.loginForm.validate(valid => {
+        this.$refs.dataForm.validate(valid => {
           if (valid) {
-            userRegister(this.temp).then(response => {
+            userRegister(this.dataForm).then(response => {
               this.dialogFormVisible = false
               this.$notify({
                 title: '成功',
