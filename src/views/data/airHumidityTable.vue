@@ -4,7 +4,7 @@
       <el-table :data="list" size="mini" height="500" @row-click="handleRowClick">
         <el-table-column prop="did" label="设备列表">
           <template slot-scope="scope">
-            <span class="link-type">{{scope.row.did}}</span>
+            <span class="link-type">{{scope.row.name}}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -60,6 +60,8 @@
         this.dataLoading = true
         getData(this.dataQuery).then(response => {
           const list = response.data
+          this.tempLineChartData.actualData = []
+          this.tempLineChartData.actualTime = []
           if (list) {
             list.forEach(ele => {
               if (ele.data > 0) {

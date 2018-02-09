@@ -15,9 +15,19 @@ export function fetchListNoPage() {
   })
 }
 
-export function deviceRegister(params) {
+export function deviceRegister(did) {
   return request({
     url: '/device/register.do',
+    method: 'post',
+    data: {
+      did
+    }
+  })
+}
+
+export function deviceUpdate(params) {
+  return request({
+    url: '/device/update.do',
     method: 'post',
     params
   })

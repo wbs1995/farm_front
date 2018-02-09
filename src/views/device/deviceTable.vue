@@ -6,26 +6,32 @@
         <i slot="prefix" class="el-input__icon el-icon-search"></i>
       </el-input>
     </div>
-    <el-table :data="list"
-      border
-      @sort-change="sortChange"
-      size="mini"
-      style="width: 100%">
+    <el-table :data="list" border @sort-change="sortChange" size="mini" style="width: 100%">
       <el-table-column
         prop="id"
         label="ID"
         sortable="custom"
         width="80">
+      </el-table-column>
+      <el-table-column
+        prop="name"
+        label="设备名称">
         <template slot-scope="scope">
-          <span class="link-type">{{scope.row.id}}</span>
+          <template v-if="scope.row.edit">
+            <el-input class="edit-input" size="mini" v-model="scope.row.name">
+              <el-button class='cancel-btn' slot="append" size="mini" @click="cancelEdit(scope.row)">撤销
+              </el-button>
+            </el-input>
+          </template>
+          <span v-else>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column
         prop="did"
-        label="设备号"
+        label="设备ID"
         width="250">
         <template slot-scope="scope">
-          <span class="link-type">{{scope.row.did}}</span>
+          <span>{{scope.row.did}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -33,10 +39,6 @@
         label="型号"
         sortable="custom"
         width="100">
-      </el-table-column>
-      <el-table-column
-        prop="token"
-        label="认证码">
       </el-table-column>
       <el-table-column
         prop="createTime"
@@ -58,9 +60,10 @@
       </el-table-column>
       <el-table-column align="center" width="150" class-name="small-padding fixed-width" label="操作">
         <template slot-scope="scope">
-          <el-button type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"/>
-          <el-button type="text" icon="el-icon-view"/>
-          <el-button type="text" icon="el-icon-download"/>
+          <el-button v-if="scope.row.edit" icon="el-icon-circle-check" @click="confirmEdit(scope.row)"></el-button>
+          <el-button v-else type="text" icon="el-icon-edit" @click='scope.row.edit=!scope.row.edit'></el-button>
+          <el-button type="text" icon="el-icon-document" @click="handleUpdate(scope.row)"></el-button>
+          <el-button type="text" icon="el-icon-view" @click='handleMap(scope.row)'></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -73,47 +76,60 @@
                      layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </div>
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="70px"
+    <el-dialog :visible.sync="dialogFormVisible">
+      <el-form ref="dataForm" :model="device" label-position="left" label-width="70px"
                style='width: 400px; margin-left:50px;'>
-        <el-form-item label="设备ID" v-if="dialogStatus=='update'">
-          <el-input v-model="temp.id" disabled></el-input>
+        <el-form-item label="设备ID">
+          <el-input v-model="device.name" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="设备ID">
+          <el-input v-model="device.id" disabled></el-input>
         </el-form-item>
         <el-form-item label="型号" prop="username">
-          <el-input v-model="temp.model" disabled></el-input>
+          <el-input v-model="device.model" disabled></el-input>
         </el-form-item>
         <el-form-item label="设备号" prop="username">
-          <el-input v-model="temp.did" disabled></el-input>
+          <el-input v-model="device.did" disabled></el-input>
         </el-form-item>
         <el-form-item label="认证码" prop="phone">
-          <el-input v-model="temp.token" disabled></el-input>
+          <el-input v-model="device.token" disabled></el-input>
         </el-form-item>
-        <el-form-item label="创建日期" v-if="dialogStatus=='update'">
-          <el-date-picker v-model="temp.createTime" type="datetime" disabled>
+        <el-form-item label="创建日期">
+          <el-date-picker v-model="device.createTime" type="datetime" disabled>
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="最新登录" v-if="dialogStatus=='update'">
-          <el-date-picker v-model="temp.updateTime" type="datetime" disabled>
+        <el-form-item label="最新登录">
+          <el-date-picker v-model="device.updateTime" type="datetime" disabled>
           </el-date-picker>
         </el-form-item>
       </el-form>
 
       <div slot="footer" class="dialog-footer">
-        <el-button v-if="dialogStatus=='create'" @click="dialogFormVisible = false">取消</el-button>
-        <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">确认</el-button>
-        <el-button v-else type="primary">确认</el-button>
+        <el-button type="primary">确认</el-button>
       </div>
     </el-dialog>
-
+    <el-dialog :visible.sync="dialogMapVisible" title="地图">
+      <el-switch style="margin-bottom: 20px" v-model="lockPosition" active-text="锁定坐标"
+                 inactive-color="#ff4949"></el-switch>
+      <amap-position :lat="device.lat" :lng="device.lng" @click="changePosition"></amap-position>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancelPosition">取 消</el-button>
+       <el-button type="primary" @click="savePosition">保存坐标</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-  import {fetchList} from '@/api/device'
+  import {fetchList, deviceUpdate} from '@/api/device'
   import {parseTime} from '@/utils'
+  import amapPosition from '@/components/AmapPosition'
 
   export default {
     name: 'deviceTable',
+    components: {
+      amapPosition
+    },
     data() {
       return {
         listQuery: {
@@ -125,63 +141,40 @@
           orderBy: 'id desc',
           sort: 'createTime'
         },
-        temp: {
+        device: {
           id: undefined,
+          name: '',
+          lng: 0,
+          lat: 0,
+          originLng: 0,
+          originLat: 0,
           createTime: '',
           updateTime: '',
           did: '',
           token: '',
           model: ''
         },
-        sortOptions: [],
-        checkboxVal: [],
-        formThead: [], // 默认表头 Default header
         total: 0,
-        textMap: {
-          update: '编辑',
-          create: '创建'
-        },
+        lockPosition: true,
         dialogFormVisible: false,
-        dialogStatus: '',
-        key: '',
-        rules: {
-          name: [{required: true, message: '用户名不能为空', trigger: 'blur'}],
-          phone: [{required: true, message: '手机号码不能为空', trigger: 'blur'}]
-        },
+        dialogMapVisible: false,
         list: []
       }
     },
     filters: {
       statusFilter(status) {
-        const statusMap = [
-          '在线',
-          '离线',
-          '禁用'
-        ]
+        const statusMap = ['在线', '离线', '禁用']
         return statusMap[status]
       },
       statusTypeFilter(status) {
-        const statusArray = [
-          'success',
-          'info',
-          'danger'
-        ]
+        const statusArray = ['success', 'info', 'danger']
         return statusArray[status]
       },
       roleFilter(status) {
-        const statusMap = [
-          '管理',
-          '用户'
-        ]
+        const statusMap = ['管理', '用户']
         return statusMap[status]
       },
       parseTime
-    },
-    watch: {
-      checkboxVal(valArr) {
-        this.formThead = this.formTheadOptions.filter(i => valArr.indexOf(i) >= 0)
-        this.key = this.key + 1
-      }
     },
     created() {
       this.getList()
@@ -190,14 +183,15 @@
       getList() {
         this.listLoading = true
         fetchList(this.listQuery).then(response => {
-          this.list = response.data.list
+          const items = response.data.list
+          this.list = items.map(v => {
+            this.$set(v, 'edit', false)
+            v.originalName = v.name
+            return v
+          })
           this.total = response.data.total
           this.listLoading = false
         })
-      },
-      handleRefresh() {
-        this.listQuery.title = undefined
-        this.getList()
       },
       handleSizeChange(val) {
         this.listQuery.pageSize = val
@@ -207,26 +201,54 @@
         this.listQuery.page = val
         this.getList()
       },
-      handleCreate() {
-        this.dialogStatus = 'create'
-        this.dialogFormVisible = true
-        this.$nextTick(() => {
-          this.$refs['dataForm'].clearValidate()
-        })
+      cancelEdit(row) {
+        row.name = row.originalName
+        row.edit = false
       },
-      handleUpdate(row) {
-        this.temp = Object.assign({}, row)
-        this.dialogStatus = 'update'
-        this.dialogFormVisible = true
-        this.$nextTick(() => {
-          this.$refs['dataForm'].clearValidate()
+      confirmEdit(row) {
+        var device = Object.assign({}, row)
+        device.updateTime = undefined
+        device.createTime = undefined
+        deviceUpdate(device).then(res => {
+          row.edit = false
+          this.$message({
+            message: res.msg,
+            type: 'success'
+          })
         })
       },
       handlerSearch() {
         this.getList()
       },
+      handleUpdate(row) {
+        this.device = Object.assign({}, row)
+        this.dialogFormVisible = true
+      },
+      handleMap(row) {
+        this.device = row
+        this.device.originLng = row.lng
+        this.device.originLat = row.lat
+        this.lockPosition = true
+        this.dialogMapVisible = true
+        console.log(row)
+      },
+      changePosition(lng, lat) {
+        if (!this.lockPosition) {
+          this.device.lng = lng
+          this.device.lat = lat
+          console.log(lng, lat)
+        }
+      },
+      savePosition() {
+        this.dialogMapVisible = false
+        this.confirmEdit(this.device)
+      },
+      cancelPosition() {
+        this.dialogMapVisible = false
+        this.device.lng = this.device.originLng
+        this.device.lat = this.device.originLat
+      },
       sortChange(val) {
-        console.log('column', val)
         const statusMap = {
           'descending': 'desc',
           'ascending': 'asc'
