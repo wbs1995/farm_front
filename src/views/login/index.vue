@@ -4,7 +4,7 @@
       <el-form autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left"
                label-width="0px"
                class="card-box login-form">
-        <h3 class="title">智慧农业物联网平台</h3>
+        <h1 class="title">智慧农业物联网平台</h1>
         <el-form-item prop="username">
         <span class="svg-container svg-container_login">
           <svg-icon icon-class="user"/>
@@ -226,7 +226,7 @@
       }
     }
     .title {
-      font-size: 26px;
+      font-size: 35px;
       font-weight: 400;
       color: $light_gray;
       margin: 0px auto 40px auto;

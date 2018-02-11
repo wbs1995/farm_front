@@ -5,7 +5,7 @@
         <el-card :body-style="mapCardStyle">
           <el-amap vid="amapDemo" :features="features" class="amap-box">
             <el-amap-marker vid="component-marker" :position="componentMarker.position"
-                            :content-render="componentMarker.contentRender"></el-amap-marker>
+                            :content-render="componentMarker.contentRender" ></el-amap-marker>
           </el-amap>
         </el-card>
       </el-col>

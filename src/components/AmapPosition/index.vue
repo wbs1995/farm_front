@@ -1,9 +1,9 @@
 <template>
   <el-card :body-style="mapCardStyle">
-    <el-amap v-if="lng!=0" vid="amapDemo" :events="events" :center="center" :plugin="plugin">
+    <el-amap v-if="lng!=0" vid="amapDemo" :events="events" :center="center" :plugin="plugin" :mapStyle="style">
       <el-amap-marker vid="component-marker" :position="position"></el-amap-marker>
     </el-amap>
-    <el-amap v-else vid="amapDemo" :events="events" :plugin="plugin">
+    <el-amap v-else vid="amapDemo" :events="events" :plugin="plugin" :mapStyle="style">
       <el-amap-marker vid="component-marker" :position="position"></el-amap-marker>
     </el-amap>
   </el-card>
@@ -36,6 +36,7 @@
           padding: '0px',
           height: '400px'
         },
+        style: 'dark',
         plugin: ['ToolBar'],
         events: {
           'click': (e) => {

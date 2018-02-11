@@ -50,6 +50,26 @@ export const constantRouterMap = [
   },
 
   {
+    path: '/greenhouse',
+    component: Layout,
+    meta: {title: '大棚管理', icon: 'greenhouse'},
+    children: [
+      {
+        path: 'index',
+        name: '大棚管理',
+        component: _import('greenhouse/table'),
+        meta: {title: '大棚列表', icon: 'greenhouse'}
+      },
+      {
+        path: 'data',
+        name: '数据中心',
+        component: _import('greenhouse/data'),
+        meta: {title: '数据中心', icon: 'greenhouse'}
+      }
+    ]
+  },
+
+  {
     path: '/data',
     component: Layout,
     redirect: 'deviceTable',

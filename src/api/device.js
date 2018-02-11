@@ -32,3 +32,15 @@ export function deviceUpdate(params) {
     params
   })
 }
+
+export function bindGreenhouse(did, hid) {
+  return request({
+    url: '/device/bind_greenhouse.do',
+    method: 'post',
+    data: {
+      did,
+      hid
+    }
+  })
+}
+

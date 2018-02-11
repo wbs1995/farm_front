@@ -222,10 +222,6 @@
           this.listLoading = false
         })
       },
-      handleRefresh() {
-        this.listQuery.title = undefined
-        this.getList()
-      },
       handleSizeChange(val) {
         this.listQuery.pageSize = val
         this.getList()
