@@ -55,5 +55,27 @@ a:hover {
 }
 
 .app-container {
-  padding: 20px;
+  padding: 21px;
+}
+
+.pagination-container {
+  margin-top: 30px;
+}
+
+.filter-container {
+  padding-bottom: 10px;
+  .filter-item {
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 10px;
+  }
+}
+
+.link-type,
+.link-type:focus {
+  color: #337ab7;
+  cursor: pointer;
+  &:hover {
+    color: rgb(32, 160, 255);
+  }
 }

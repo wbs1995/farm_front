@@ -190,9 +190,10 @@ module.exports = {
     'yoda': [2, 'never'],
     'prefer-const': 2,
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
-    'object-curly-spacing': [2, 'always', {
-      objectsInObjects: false
-    }],
+    // 'object-curly-spacing': [2, 'always', {
+    //   objectsInObjects: false
+    // }],
+    'object-curly-spacing': 'off',
     'array-bracket-spacing': [2, 'never']
   }
 }

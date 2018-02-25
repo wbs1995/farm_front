@@ -1,24 +1,29 @@
 {
-  "name": "vue-admin-template",
-  "version": "3.0.0",
-  "license": "MIT",
-  "description": "A vue admin template with Element UI & axios & iconfont & permission control & lint",
+  "name": "farm_front",
+  "description": "farm frontend",
   "author": "Pan <panfree23@gmail.com>",
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "build": "node build/build.js",
+    "build:prod": "NODE_ENV=production env_config=prod node build/build.js",
+    "upload": "scp -P 8022 -r dist taoroot@lujiantao.xyz:/product/farm/farm_front/",
     "build:report": "npm_config_report=true node build/build.js",
     "lint": "eslint --ext .js,.vue src",
     "test": "npm run lint"
   },
   "dependencies": {
     "axios": "0.17.1",
+    "echarts": "^4.0.2",
     "element-ui": "2.0.8",
     "js-cookie": "2.2.0",
     "normalize.css": "7.0.0",
     "nprogress": "0.2.0",
+    "screenfull": "^3.3.2",
     "vue": "2.5.10",
+    "vue-amap": "^0.4.5",
+    "vue-count-to": "^1.0.13",
+    "vue-image-crop-upload": "^2.2.3",
     "vue-router": "3.0.1",
     "vuex": "3.0.1"
   },

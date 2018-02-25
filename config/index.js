@@ -49,7 +49,7 @@ module.exports = {
   },
 
   build: {
-    // Template for index.html
+    // Template for index.vue
     index: path.resolve(__dirname, '../dist/index.html'),
 
     // Paths
